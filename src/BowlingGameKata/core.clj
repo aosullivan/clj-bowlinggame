@@ -2,7 +2,7 @@
   (:use [clojure.test]))
 
 
-(defn score [rolls] 
+(defn score-1 [rolls] 
   (loop [rolls rolls
          score 0]
     (if (seq rolls)
@@ -15,19 +15,30 @@
 	             (+ score (first rolls) (second rolls))))
       score)))
 
+
+(run-tests)
+
+(defn score [rolls] 
+  (loop [rolls rolls
+         scoretotal 0]
+    (if (> (count rolls) 0)
+      (recur (rest rolls)
+             (+ (first rolls) scoretotal)) 
+      scoretotal )))
+
 (deftest gutter-game
   (is (= (score [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] ) 0 )))
   
 (deftest all-ones
   (is (= (score [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1] ) 20 )))
 
+
+(deftest one-five-game
+  (is (= (score [1 5 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1] ) 24 )))
+
 (deftest spare-game
   (is (= (score [5 5 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] ) 16 )))
 
-
-(loop [x 1]  
-  (print (clojure.string/join ["value of x: " x "\n"]))
-  (if (< x 5) (recur (inc x))))
 
 
 ;(defn score [rolls] 
@@ -38,4 +49,3 @@
 ;             (+ score (first rolls)))
 ;      score)))
 
-(run-tests)
